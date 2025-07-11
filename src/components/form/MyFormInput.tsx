@@ -76,13 +76,7 @@ const MyFormInput = ({
   return (
     <div className={cn("flex flex-col gap-1", className)}>
       {label && (
-        <label
-          htmlFor={name}
-          className={cn(
-            "md:text-xl text-[15px] text-grayText font-medium mb-1",
-            labelClassName
-          )}
-        >
+        <label htmlFor={name} className={cn("mb-1", labelClassName)}>
           {label}
         </label>
       )}
@@ -107,7 +101,7 @@ const MyFormInput = ({
                 <label
                   htmlFor={name}
                   className={cn(
-                    "border border-[#7E1F7F40] rounded-lg p-6 flex flex-col items-center justify-center bg-gray-50 cursor-pointer hover:bg-gray-100 transition-colors relative overflow-hidden",
+                    "border border-758389 rounded-lg p-6 flex flex-col items-center justify-center bg-[#758389] cursor-pointer hover:bg-gray-100 transition-colors relative overflow-hidden",
                     "min-h-[100px]",
                     error ? "border-red-500" : "",
                     inputClassName
@@ -176,7 +170,7 @@ const MyFormInput = ({
                 rows={rows || 3}
                 disabled={disabled}
                 className={cn(
-                  "w-full px-4 py-3 md:text-[17px] rounded-md focus:outline-none focus:ring-2 border !border-[#7E1F7F40] bg-transparent ",
+                  "w-full px-4 py-3 md:text-[17px] rounded-md focus:outline-none focus:ring-2 border !border-758389  bg-[#758389] text-white",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}
@@ -228,7 +222,7 @@ const MyFormInput = ({
                     : type
                 }
                 className={cn(
-                  "w-full px-4 py-3 md:text-[17px] rounded-md focus:outline-none focus:ring-2 border !border-[#7E1F7F40] bg-transparent",
+                  "w-full px-4 py-3 md:text-[17px] rounded-md focus:outline-none focus:ring-2 border  bg-[#758389] text-white",
                   error ? "border-red-500" : "border-gray-300",
                   inputClassName
                 )}

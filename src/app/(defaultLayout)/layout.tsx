@@ -1,4 +1,6 @@
-
+import Header from "@/components/shared/Header";
+import SideBar from "@/components/shared/SideBar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -8,9 +10,15 @@ export const metadata: Metadata = {
 
 const CommonLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <main>
-      <div className="max-w-[1372px] mx-auto md:py-5 md:px-0 px-3">{children}</div>
-    </main>
+    <SidebarProvider className="pl-32 pr-6 pb-16">
+      <SideBar />
+      <main className="w-full">
+        <div className="max-w-[1372px] mx-auto md:py-5 md:px-0 px-3 bg-[#001a26] text-white">
+          <Header />
+          {children}
+        </div>
+      </main>
+    </SidebarProvider>
   );
 };
 

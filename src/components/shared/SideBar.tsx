@@ -10,20 +10,24 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import logo from "../../assets/iamges/logo.png";
+import logo from "../../assets/images/logo.png";
 import {
-  SquareUser,
-  UserRoundX,
   Settings,
   ClipboardMinus,
   LayoutDashboardIcon,
-  Contact,
+  LogOut,
+  NotepadText,
+  Users,
+  ChartNoAxesColumnDecreasing,
+  MessageCircleMore,
 } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { removeCookie } from "@/utils/cookies";
+import { RiUserCommunityLine } from "react-icons/ri";
+import { MdOutlineSubscriptions } from "react-icons/md";
 
 const items = [
   {
@@ -32,24 +36,39 @@ const items = [
     icon: LayoutDashboardIcon,
   },
   {
-    title: "Report",
-    url: "/report",
+    title: "Content",
+    url: "/content",
     icon: ClipboardMinus,
   },
   {
-    title: "Profile",
+    title: "Leaders/pastors",
     url: "/profile",
-    icon: Contact,
+    icon: NotepadText,
   },
   {
-    title: "User",
-    url: "/user",
-    icon: SquareUser,
-  },
-  {
-    title: "Remove",
+    title: "People",
     url: "/remove",
-    icon: UserRoundX,
+    icon: Users,
+  },
+  {
+    title: "Community",
+    url: "/user",
+    icon: RiUserCommunityLine,
+  },
+  {
+    title: "Analytics",
+    url: "/remove",
+    icon: ChartNoAxesColumnDecreasing,
+  },
+  {
+    title: "Message For Mentor",
+    url: "/remove",
+    icon: MessageCircleMore,
+  },
+  {
+    title: "Subscription",
+    url: "/remove",
+    icon: MdOutlineSubscriptions,
   },
   {
     title: "Setting",
@@ -69,26 +88,26 @@ const SideBar = () => {
     router.push("/login");
   };
   return (
-    <Sidebar>
-      <SidebarContent className="!bg-[#1C1C1C] text-white">
+    <Sidebar className="m-6 rounded-lg border border-white/50 overflow-hidden w-80">
+      <SidebarContent className="!bg-secondary text-white">
         <SidebarGroup />
         <SidebarGroupLabel className="mb-14 mt-8 mx-auto">
-          <Image src={logo} alt="logo" width={190} height={50} />
+          <Image src={logo} alt="logo" width={140} height={50} />
         </SidebarGroupLabel>
         <SidebarGroupContent>
-          <SidebarMenu className="px-4 space-y-3">
+          <SidebarMenu className="hover:border-primary hover:rounded-none hover:bg-none">
             {items.map((item) => (
-              <SidebarMenuItem key={item.title}>
+              <SidebarMenuItem key={item.title} className="hover:border-x-2">
                 <SidebarMenuButton
                   asChild
-                  className={`text-[15px] font-bold px-4 ${
+                  className={`text-lg !font-normal text-white/70 px-5 w-full py-7 ${
                     pathName === `${item.url}`
-                      ? "bg-white text-black rounded-lg"
-                      : "text-white"
+                      ? "text-primary border-x-2 border-primary rounded-none"
+                      : ""
                   }`}
                 >
                   <a href={item.url}>
-                    <item.icon />
+                    <item.icon className="!w-5 !h-5 mr-2" />
                     <span>{item.title}</span>
                   </a>
                 </SidebarMenuButton>
@@ -97,16 +116,15 @@ const SideBar = () => {
           </SidebarMenu>
         </SidebarGroupContent>
         <SidebarGroup />
-
       </SidebarContent>
-      <SidebarFooter className="!bg-[#1C1C1C] text-white">
-          <button
-            onClick={handleLolgout}
-            className="py-3 border border-red-400 rounded-lg font-medium text-base"
-          >
-            Log out
-          </button>
-        </SidebarFooter>
+      <SidebarFooter className="!bg-secondary text-white pb-20 border-t border-white/50">
+        <button
+          onClick={handleLolgout}
+          className="py-3 rounded-lg text-base flex gap-2 items-center justify-center text-white/70"
+        >
+          <LogOut /> Log out
+        </button>
+      </SidebarFooter>
     </Sidebar>
   );
 };
