@@ -42,7 +42,7 @@ const items = [
   },
   {
     title: "Leaders/pastors",
-    url: "/profile",
+    url: "/pastors",
     icon: NotepadText,
   },
   {
@@ -87,6 +87,7 @@ const SideBar = () => {
     removeCookie("token");
     router.push("/login");
   };
+  
   return (
     <Sidebar className="m-6 rounded-lg border border-white/50 overflow-hidden w-80">
       <SidebarContent className="!bg-secondary text-white">

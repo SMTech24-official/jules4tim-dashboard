@@ -33,7 +33,7 @@ const AddCourse = () => {
       value: item.id,
     };
   });
-  console.log(categoryOptions);
+
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Uploading...");
 

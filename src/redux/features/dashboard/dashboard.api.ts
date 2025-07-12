@@ -27,7 +27,27 @@ export const dashboardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Course"],
     }),
+
+    userChartData: builder.query({
+      query: () => ({
+        url: "/dashboard/subscribers-per-week",
+        method: "GET",
+      }),
+    }),
+
+    overView: builder.query({
+      query: () => ({
+        url: "/dashboard",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useCreateCategoryMutation, useCategoryQuery, useCreateCourseMutation } = dashboardApi;
+export const {
+  useCreateCategoryMutation,
+  useCategoryQuery,
+  useCreateCourseMutation,
+  useUserChartDataQuery,
+  useOverViewQuery
+} = dashboardApi;
