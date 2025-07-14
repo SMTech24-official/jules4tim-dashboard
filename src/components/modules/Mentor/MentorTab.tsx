@@ -6,7 +6,7 @@ import { useAllVideoQuery } from "@/redux/features/content/content.api";
 import Spinner from "@/components/common/Spinner";
 import VideoCard from "../common/VideoCard";
 
-const PastorTab = () => {
+const MentorTab = () => {
   const { data: videos, isFetching } = useAllVideoQuery([
     { name: "limit", value: 9 },
   ]);
@@ -61,4 +61,4 @@ const PastorTab = () => {
   );
 };
 
-export default PastorTab;
+export default MentorTab;

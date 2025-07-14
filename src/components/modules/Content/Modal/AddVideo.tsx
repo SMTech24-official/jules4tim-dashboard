@@ -12,18 +12,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useCreateVideoMutation } from "@/redux/features/content/content.api";
 import {
   useCategoryQuery,
-  useCreateCourseMutation,
 } from "@/redux/features/dashboard/dashboard.api";
 import { CircleFadingPlus } from "lucide-react";
 import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-const AddVideo = () => {
+const AddVideo = ({ userId }: { userId: string }) => {
   const [open, setOpen] = useState(false);
-  const [addCourse] = useCreateCourseMutation();
+  const [addVideo] = useCreateVideoMutation();
   const { data } = useCategoryQuery(undefined);
 
   const categoryOptions = data?.data?.map((item: any) => {
@@ -33,7 +33,7 @@ const AddVideo = () => {
       value: item.id,
     };
   });
-  console.log(categoryOptions);
+
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Uploading...");
 
@@ -44,29 +44,32 @@ const AddVideo = () => {
       JSON.stringify({
         title: data.title,
         categoryId: data.categoryId,
+        description: data.description,
+        userId,
       })
     );
 
-    formData.append("intro", data.video);
-    formData.append("thumnail", data.thumnail);
+    formData.append("videoUrl", data.video);
+    formData.append("thumbnail", data.thumbnail);
 
     try {
-      await addCourse(formData).unwrap();
+      await addVideo(formData).unwrap();
       toast.success("Uploaded successfully", { id: toastId });
       setOpen(false);
     } catch (err: any) {
       toast.error(err.data?.message || "Faild to Upload", { id: toastId });
     }
   };
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger className="border border-white/50 rounded-lg px-4 py-3 flex gap-2 items-center">
-          <CircleFadingPlus className="w-5 h-5 text-primary" /> Add Course
+          <CircleFadingPlus className="w-5 h-5 text-primary" /> Add Video
         </DialogTrigger>
         <DialogContent className="bg-secondary text-white md:h-auto h-full overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-xl">Create New Category</DialogTitle>
+            <DialogTitle className="text-xl">Add New Video</DialogTitle>
             <DialogDescription></DialogDescription>
             <div>
               <MyFormWrapper onSubmit={handleSubmit} className="space-y-3">
@@ -81,7 +84,7 @@ const AddVideo = () => {
                   options={categoryOptions}
                 />
                 <MyFormInput
-                  name="thumnail"
+                  name="thumbnail"
                   type="file"
                   label="Upload Course Thumnail"
                   filePlaceholder="Upload Thumnaiul"
@@ -90,8 +93,14 @@ const AddVideo = () => {
                 <MyFormInput
                   type="file"
                   name="video"
-                  label="Course Name"
+                  label="Upload video"
                   filePlaceholder="Upload Video"
+                />
+                <MyFormInput
+                  type="textarea"
+                  name="description"
+                  label="Description"
+                  placeholder="Wirte here"
                 />
 
                 <MyBtn name="Create" width="w-full" />

@@ -1,12 +1,11 @@
-import SinglePastor from "@/components/modules/Pastores/SinglePastor";
-
+import SingleMentor from "@/components/modules/Mentor/SingleMentor";
 
 const page = () => {
-    return (
-        <div>
-            <SinglePastor />
-        </div>
-    );
+  return (
+    <div>
+      <SingleMentor />
+    </div>
+  );
 };
 
 export default page;

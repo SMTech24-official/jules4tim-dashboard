@@ -35,7 +35,21 @@ export const usersdApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    addMentor: builder.mutation({
+      query: (data) => ({
+        url: `/users/register/mentor-and-admin`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
-export const { useAllUserQuery, useGetUserQuery, useAnalysisChartQuery } = usersdApi;
+export const {
+  useAllUserQuery,
+  useGetUserQuery,
+  useAnalysisChartQuery,
+  useAddMentorMutation,
+} = usersdApi;

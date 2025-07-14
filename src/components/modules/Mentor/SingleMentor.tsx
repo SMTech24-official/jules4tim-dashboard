@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useParams } from "next/navigation";
 import user from "../../../assets/placeholders/image_placeholder.png";
 import { Mail } from "lucide-react";
-import PastorTab from "./PastorTab";
 import { format } from "date-fns";
+import MentorTab from "./MentorTab";
 
-const SinglePastor = () => {
+const SingleMentor = () => {
   const { id } = useParams();
 
   const { data, isFetching } = useGetUserQuery(id);
@@ -21,7 +21,10 @@ const SinglePastor = () => {
 
   return (
     <div className="my-6 border border-white/50 rounded-lg bg-secondary p-5">
-      <h2 className="text-xl font-medium">Details Overview</h2>
+      <div className="flex gap-3 justify-between items-center">
+        <h2 className="text-xl font-medium">Details Overview</h2>
+        
+      </div>
 
       <div className="mt-5 mb-8 flex gap-3">
         <Image
@@ -46,9 +49,9 @@ const SinglePastor = () => {
         </div>
       </div>
 
-      <PastorTab />
+      <MentorTab />
     </div>
   );
 };
 
-export default SinglePastor;
+export default SingleMentor;

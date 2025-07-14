@@ -12,61 +12,16 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const datas = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
 const ChartTab = () => {
   const { id } = useParams();
 
   const { data, isFetching } = useAnalysisChartQuery(id);
 
-  console.log(data);
-
   if (isFetching) {
     return <Spinner />;
   }
+
+  const chartData = data?.data?.monthlyData;
 
   return (
     <div className="w-full h-[450px] border border-white/50 rounded-lg p-6">
@@ -74,7 +29,7 @@ const ChartTab = () => {
         <BarChart
           width={300}
           height={300}
-          data={datas}
+          data={chartData}
           margin={{
             top: 5,
             right: 30,
@@ -82,11 +37,11 @@ const ChartTab = () => {
             bottom: 5,
           }}
         >
-          <XAxis dataKey="name" />
+          <XAxis dataKey="month" />
           <YAxis />
           <Tooltip
-            formatter={(value) => [`${value}`, "User"]}
-            labelFormatter={(label) => `Week: ${label}`}
+            formatter={(value) => [`${value}`, "Videos"]}
+            labelFormatter={(label) => `Month: ${label}`}
             contentStyle={{
               backgroundColor: "#1e293b",
               color: "#ffffff",
@@ -98,7 +53,7 @@ const ChartTab = () => {
           />
           <Legend />
           <Bar
-            dataKey="pv"
+            dataKey="videoCount"
             fill="#BFE91FB0"
             barSize={50}
             radius={[5, 5, 0, 0]}

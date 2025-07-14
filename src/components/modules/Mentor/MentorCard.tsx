@@ -6,13 +6,12 @@ import Spinner from "@/components/common/Spinner";
 import { useAllUserQuery } from "@/redux/features/users/users.api";
 import Link from "next/link";
 
-const PastoreCard = () => {
+const MentorCard = () => {
   const { data, isFetching } = useAllUserQuery([
     { name: "limit", value: 12 },
-    { name: "searchTerm", value: "PASTOR" },
+    { name: "searchTerm", value: "MENTOR" },
   ]);
 
-  console.log(data?.data?.data);
   const datas = data?.data?.data;
 
   if (isFetching) {
@@ -31,7 +30,7 @@ const PastoreCard = () => {
             alt="user"
             width={300}
             height={200}
-            className="w-full h-40 rounded-lg "
+            className="w-full h-48 rounded-lg "
           />
 
           <p>{item.fullName}</p>
@@ -41,4 +40,4 @@ const PastoreCard = () => {
   );
 };
 
-export default PastoreCard;
+export default MentorCard;
