@@ -41,13 +41,13 @@ const items = [
     icon: ClipboardMinus,
   },
   {
-    title: "Leaders/pastors",
-    url: "/pastors",
+    title: "Leaders/Mentor",
+    url: "/mentor",
     icon: NotepadText,
   },
   {
     title: "People",
-    url: "/remove",
+    url: "/people",
     icon: Users,
   },
   {

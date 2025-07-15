@@ -4,11 +4,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ChartTab from "./TabItems/ChartTab";
 import { useAllVideoQuery } from "@/redux/features/content/content.api";
 import Spinner from "@/components/common/Spinner";
-import VideoCard from "../common/VideoCard";
+import VideoModal from "../common/VideoModal";
+import { useParams } from "next/navigation";
 
 const MentorTab = () => {
+    const { id } = useParams();
   const { data: videos, isFetching } = useAllVideoQuery([
-    { name: "limit", value: 9 },
+    { name: "limit", value: 9 }, {name: "userId", value: id}
   ]);
 
   if (isFetching) {
@@ -46,7 +48,7 @@ const MentorTab = () => {
         <TabsContent value="Upload Video">
           <div className="grid md:grid-cols-3 gap-6 grid-cols-1">
             {allVideo?.map((item: any) => (
-              <VideoCard key={item.id} data={item} />
+              <VideoModal key={item.id} data={item} />
             ))}
           </div>
         </TabsContent>

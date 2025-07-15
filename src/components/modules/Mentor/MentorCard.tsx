@@ -21,7 +21,7 @@ const MentorCard = () => {
     <div className="grid md:grid-cols-4 gap-6">
       {datas?.map((item: any) => (
         <Link
-          href={`/pastors/${item.id}`}
+          href={`/mentor/${item.id}`}
           key={item?.id}
           className="border border-white/50 p-3 rounded-lg space-y-3"
         >

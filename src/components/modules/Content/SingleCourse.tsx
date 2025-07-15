@@ -9,8 +9,8 @@ import {
   useAllVideoQuery,
   useCourseQuery,
 } from "@/redux/features/content/content.api";
-import VideoCard from "../common/VideoCard";
 import AddVideo from "./Modal/AddVideo";
+import VideoModal from "../common/VideoModal";
 
 const SingleCourse = () => {
   const { id } = useParams();
@@ -57,7 +57,7 @@ const SingleCourse = () => {
           </div>
         </div>
 
-        <AddVideo userId={courseData?.mentor?.user?.id} />
+        <AddVideo userId={courseData?.mentor?.user?.id} courseId={courseData?.id}/>
       </div>
 
       <div className="border-b border-white/50 mb-6 pb-3">
@@ -66,7 +66,7 @@ const SingleCourse = () => {
 
       <div className="grid md:grid-cols-3 grid-cols-2 gap-6">
         {allVideo?.map((item: any) => (
-          <VideoCard key={item.id} data={item} />
+          <VideoModal key={item.id} data={item} />
         ))}
       </div>
     </div>

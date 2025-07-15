@@ -1,7 +1,7 @@
 "use client"
 import Image from "next/image";
 import React from "react";
-import { format } from "date-fns";
+// import { format } from "date-fns";
 
 type VideoItem = {
   id: string | number;
@@ -24,10 +24,10 @@ const VideoCard = ({ data }: Props) => {
         alt="thumbnail"
         width={500}
         height={250}
-        className="w-full h-48 rounded-lg"
+        className="w-full h-56 rounded-lg"
       />
 
-      <div className="flex justify-between gap-2">
+      {/* <div className="flex justify-between gap-2">
         <div className="space-y-1">
           <p>{data.title}</p>
           <p>Mentors - {data.mentorName}</p>
@@ -47,7 +47,7 @@ const VideoCard = ({ data }: Props) => {
             <p>{format(new Date(data?.createdAt), "MMM d, yyyy")}</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

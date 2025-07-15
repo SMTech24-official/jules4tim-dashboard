@@ -21,7 +21,7 @@ import { useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "sonner";
 
-const AddVideo = ({ userId }: { userId: string }) => {
+const AddVideo = ({ userId, courseId }: { userId: string, courseId: string }) => {
   const [open, setOpen] = useState(false);
   const [addVideo] = useCreateVideoMutation();
   const { data } = useCategoryQuery(undefined);
@@ -46,6 +46,7 @@ const AddVideo = ({ userId }: { userId: string }) => {
         categoryId: data.categoryId,
         description: data.description,
         userId,
+        courseId
       })
     );
 
@@ -67,7 +68,7 @@ const AddVideo = ({ userId }: { userId: string }) => {
         <DialogTrigger className="border border-white/50 rounded-lg px-4 py-3 flex gap-2 items-center">
           <CircleFadingPlus className="w-5 h-5 text-primary" /> Add Video
         </DialogTrigger>
-        <DialogContent className="bg-secondary text-white md:h-auto h-full overflow-y-auto">
+        <DialogContent className="bg-secondary text-white h-5/6 overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="text-xl">Add New Video</DialogTitle>
             <DialogDescription></DialogDescription>

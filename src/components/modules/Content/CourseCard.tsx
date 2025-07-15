@@ -17,7 +17,7 @@ type Props = {
 };
 
 const CourseCard = ({ data }: Props) => {
-console.log(data);
+
   return (
     <Link href={`/content/${data?.id}`} className="space-y-4">
       <Image
@@ -44,7 +44,7 @@ console.log(data);
           />
 
           <div className="space-y-1 text-sm">
-            <p>{data.title}</p>
+            <p>{data?.mentor?.user?.fullName}</p>
             <p>{format(new Date(data.createdAt), "MMM d, yyyy")}</p>
           </div>
         </div>
