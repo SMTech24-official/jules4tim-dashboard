@@ -32,6 +32,23 @@ export const dashboardApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    apiList: builder.query({
+      query: () => ({
+        url: "/settings",
+        method: "GET",
+      }),
+      providesTags: ["Api"],
+    }),
+
+    createApi: builder.mutation({
+      query: (data) => ({
+        url: "/settings",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Api"],
+    }),
   }),
 });
 
@@ -39,5 +56,7 @@ export const {
   useCreateCategoryMutation,
   useCategoryQuery,
   useUserChartDataQuery,
-  useOverViewQuery
+  useOverViewQuery,
+  useApiListQuery,
+  useCreateApiMutation,
 } = dashboardApi;

@@ -9,49 +9,62 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useAllUserQuery } from "@/redux/features/users/users.api";
+import { usePandingPastorQuery } from "@/redux/features/users/users.api";
 import Image from "next/image";
 import { useState } from "react";
 import userIcon from "../../../assets/placeholders/user-placeholder.jpg";
+import Link from "next/link";
+import MyFormWrapper from "@/components/form/MyFormWrapper";
+import MyFormInput from "@/components/form/MyFormInput";
+import { FieldValues } from "react-hook-form";
+import { Search } from "lucide-react";
+import StatusModal from "./StatusModal";
 
 const PandingPasrot = () => {
-  const [category, setCategory] = useState("");
-  const { data, isFetching } = useAllUserQuery([
+  const [searchTerm, setSearchTerm] = useState("");
+  const { data, isFetching } = usePandingPastorQuery([
     { name: "limit", value: 15 },
-    { name: "searchTerm", value: category },
+    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
   ]);
 
-  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCategory(e.target.value);
+  const handleSubmit = (data: FieldValues) => {
+    setSearchTerm(data.search);
   };
-
-  const userOptions = ["MENTOR", "PASTOR"];
 
   if (isFetching) {
     return <Spinner />;
   }
 
   const users = data?.data?.data;
-
+  console.log(users);
   return (
     <div>
       <div className="flex justify-between gap-4 flex-wrap mb-8">
-        <div className="flex gap-1 items-center">
-          <h3>ALL</h3>
-          <select
-            value={category}
-            onChange={handleCategoryChange}
-            className="text-white bg-transparent px-2 py-1"
+        <div className="flex gap-7 items-center">
+          <Link
+            href={"/people"}
+            className="border-b border-white/50 text-white/50 text-xl pb-2 mt-1"
           >
-            <option className="bg-secondary" value="">
-              USERS
-            </option>
-            {userOptions?.map((item: any) => (
-              <option key={item} className="bg-secondary" value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
+            <h3>ALL USERS</h3>
+          </Link>
+
+          <div className={`border-b border-[#f65142] text-xl pb-2`}>
+            <h3 className="text-[#f65142] mt-1">Pending Pastor </h3>
+          </div>
+        </div>
+
+        <div className="">
+          <MyFormWrapper onSubmit={handleSubmit} className="flex items-start">
+            <MyFormInput
+              name="search"
+              inputClassName="rounded-none"
+              placeholder="Search..."
+            />
+
+            <button className="p-[13px] border border-white/70">
+              <Search />
+            </button>
+          </MyFormWrapper>
         </div>
       </div>
       <Table>
@@ -79,7 +92,21 @@ const PandingPasrot = () => {
               <TableCell>{user?.fullName}</TableCell>
               <TableCell>{user?.email}</TableCell>
               <TableCell>{user?.status}</TableCell>
-              <TableCell>{user?.actions}</TableCell>
+              <TableCell className="flex gap-3 items-center">
+                <StatusModal
+                  id={user?.id}
+                  status="ACTIVATE"
+                  btnName="Activate"
+                  actionFor="Pastor"
+                  btnType="btn"
+                />
+                <StatusModal
+                  id={user?.id}
+                  status="ACTIVATE"
+                  actionFor="Pastor"
+                  btnType="icon"
+                />
+              </TableCell>
             </TableRow>
           </TableBody>
         ))}

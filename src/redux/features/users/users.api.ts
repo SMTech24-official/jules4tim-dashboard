@@ -29,6 +29,42 @@ export const usersdApi = baseApi.injectEndpoints({
       providesTags: ["User"],
     }),
 
+    userStatusAction: builder.mutation({
+      query: (args) => ({
+        url: `/users/${args.id}`,
+        method: "PUT",
+        body: args.data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+
+    pandingPastor: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParams) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+        return {
+          url: "/users/pending-pastors",
+          method: "GET",
+          params: params,
+        };
+      },
+      providesTags: ["Pastor"],
+    }),
+
+    pastorStatusAction: builder.mutation({
+      query: (args) => ({
+        url: `/users/pastor-status/${args.id}`,
+        method: "PUT",
+        body: args.data,
+      }),
+      invalidatesTags: ["Pastor"],
+    }),
+
     analysisChart: builder.query({
       query: (id) => ({
         url: `/dashboard/video-uploaded-per-month/${id}`,
@@ -50,6 +86,9 @@ export const usersdApi = baseApi.injectEndpoints({
 export const {
   useAllUserQuery,
   useGetUserQuery,
+  useUserStatusActionMutation,
   useAnalysisChartQuery,
   useAddMentorMutation,
+  usePandingPastorQuery,
+  usePastorStatusActionMutation
 } = usersdApi;

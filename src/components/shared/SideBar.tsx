@@ -62,12 +62,12 @@ const items = [
   },
   {
     title: "Message For Mentor",
-    url: "/remove",
+    url: "/message",
     icon: MessageCircleMore,
   },
   {
     title: "Subscription",
-    url: "/remove",
+    url: "/subscription",
     icon: MdOutlineSubscriptions,
   },
   {

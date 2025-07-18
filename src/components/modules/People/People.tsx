@@ -17,9 +17,11 @@ import Link from "next/link";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
 import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
-import { Search } from "lucide-react";
+import { ChevronDown, Search } from "lucide-react";
+import StatusModal from "./StatusModal";
 
 const People = () => {
+  const [userId, setUserId] = useState<string>("");
   const [category, setCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isFetching } = useAllUserQuery([
@@ -37,6 +39,14 @@ const People = () => {
 
   const handleSubmit = (data: FieldValues) => {
     setSearchTerm(data.search);
+  };
+
+  const handleStatus = (id: string) => {
+    if (userId === id) {
+      setUserId("");
+    } else {
+      setUserId(id);
+    }
   };
 
   if (isFetching) {
@@ -70,9 +80,11 @@ const People = () => {
 
           <Link
             href={"/panding-pastor"}
-            className="border-b border-white/50 text-xl pb-2"
+            className={`${
+              category !== "PASTOR" ? "hidden" : ""
+            } border-b border-white/50 text-xl pb-2`}
           >
-            <h3 className="text-[#EB493B4D]">Pending Pastor</h3>
+            <h3 className="text-[#f5938ab0] mt-1">Pending Pastor</h3>
           </Link>
         </div>
 
@@ -92,7 +104,7 @@ const People = () => {
       </div>
       <Table>
         <TableHeader>
-          <TableRow className="text-base ">
+          <TableRow className="text-base">
             <TableHead className="w-[100px] text-white">Users</TableHead>
             <TableHead className="text-white">User name</TableHead>
             <TableHead className="text-white">Email</TableHead>
@@ -115,7 +127,35 @@ const People = () => {
               <TableCell>{user?.fullName}</TableCell>
               <TableCell>{user?.email}</TableCell>
               <TableCell>{user?.status}</TableCell>
-              <TableCell>{user?.actions}</TableCell>
+              <TableCell>
+                <div className="relative">
+                  <div
+                    onClick={() => handleStatus(user?.id)}
+                    className="flex gap-2 items-center cursor-pointer"
+                  >
+                    {user?.actions} <ChevronDown />
+                  </div>
+
+                  <div
+                    className={`${
+                      userId !== user?.id ? "hidden" : ""
+                    } absolute top-6 border border-white/50 p-5  flex gap-1 flex-col bg-[#001a26] rounded-sm z-30 space-y-3`}
+                  >
+                    <StatusModal
+                      id={user?.id}
+                      status="ACTIVATE"
+                      btnName="Active"
+                      btnType="btn"
+                    />
+                    <StatusModal
+                      id={user?.id}
+                      status="DEACTIVATE"
+                      btnName="Deactivate"
+                      btnType="btn"
+                    />
+                  </div>
+                </div>
+              </TableCell>
             </TableRow>
           </TableBody>
         ))}
