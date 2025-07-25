@@ -2,6 +2,7 @@
 "use client";
 import MyBtn from "@/components/common/MyBtn";
 import MyFormInput from "@/components/form/MyFormInput";
+import MyFormSelect from "@/components/form/MyFormSelect";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
 import {
   Dialog,
@@ -21,6 +22,11 @@ const AddMentorModal = () => {
   const [open, setOpen] = useState(false);
   const [addMentor] = useAddMentorMutation();
 
+  const roleOptions = [
+    { value: "MENTOR", label: "Mentor", keyOption: "MENTOR" },
+    { value: "BOTH", label: "Mentor & Pastor", keyOption: "BOTH" },
+  ];
+
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Uploading...");
     try {
@@ -31,6 +37,7 @@ const AddMentorModal = () => {
       toast.error(err.data?.message || "Faild to Upload", { id: toastId });
     }
   };
+
   return (
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -47,6 +54,11 @@ const AddMentorModal = () => {
                   name="fullName"
                   label="Mentor Name"
                   placeholder="Enter name"
+                />
+                <MyFormSelect
+                  name="role"
+                  options={roleOptions}
+                  label="Select Role"
                 />
                 <MyFormInput
                   name="email"

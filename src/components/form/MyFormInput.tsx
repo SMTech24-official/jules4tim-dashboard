@@ -135,7 +135,7 @@ const MyFormInput = ({
                           <line x1="12" y1="3" x2="12" y2="15"></line>
                         </svg>
                       </div>
-                      <p className="text-gray-700 text-center">
+                      <p className="text-white text-center">
                         {filePlaceholder || "Upload Image"}
                       </p>
                     </>

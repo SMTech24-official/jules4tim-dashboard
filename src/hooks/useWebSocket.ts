@@ -6,15 +6,15 @@ import { useEffect, useState } from "react";
 
 type WebSocketEvent =
   | "authenticate"
-  | "MESSAGE"
-  | "FETCH_CHATS"
-  | "UNREAD_MESSAGES"
-  | "MESSAGE_LIST"
-  | "FETCH_ALL_DRIVER_ONLINE_OFFLINE"; 
+  | "message"
+  | "fetchChats"
+  | "unReadMessages"
+  | "messageList"
+  | "onlineUsers";
 
 interface WebSocketMessage {
   event: WebSocketEvent;
-  [key: string]: any; 
+  [key: string]: any;
 }
 
 interface Message {
@@ -25,18 +25,12 @@ interface Message {
   createdAt: string;
 }
 
-interface Driver {
-  id: string;
-  isOnline: boolean;
-}
-
 const useWebSocket = (url: string, authToken: string) => {
   const [socket, setSocket] = useState<WebSocket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [messageList, setMessageList] = useState<any>(null);
   const [chatMessages, setChatMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(true);
-  const [drivers, setDrivers] = useState<Driver[]>([]);
 
   useEffect(() => {
     const ws = new WebSocket(url);
@@ -45,7 +39,6 @@ const useWebSocket = (url: string, authToken: string) => {
       console.log("✅ Connected to WebSocket");
       setIsConnected(true);
 
-      // Authenticate after connection
       ws.send(
         JSON.stringify({
           event: "authenticate",
@@ -54,37 +47,27 @@ const useWebSocket = (url: string, authToken: string) => {
       );
       console.log("🔑 Authentication event sent");
 
-      // Request message list after authentication
-      ws.send(JSON.stringify({ event: "MESSAGE_LIST" }));
-
-      // Request driver online/offline status
-      ws.send(JSON.stringify({ event: "FETCH_ALL_DRIVER_ONLINE_OFFLINE" }));
+      ws.send(JSON.stringify({ event: "messageList" }));
     };
 
     ws.onmessage = (event) => {
       const data = JSON.parse(event.data);
-      // console.log("📩 Received WebSocket event:", data.event);
+      console.log("📩 WS EVENT:", data.event, data);
 
-      // Handle different event types
       switch (data.event) {
-        case "MESSAGE_LIST":
-          console.log('messageList =>',data);
+        case "messageList":
           setMessageList(data);
           setLoading(false);
           break;
-        case "FETCH_CHATS":
-          setChatMessages(data.data || []);
+
+        case "fetchChats":
+          setChatMessages(data.data.chats || []);
           setLoading(false);
           break;
-        case "FETCH_ALL_DRIVER_ONLINE_OFFLINE":
-          // console.log("Driver data received:", data);
-          setDrivers(data.data || []);
-          setLoading(false);
-          break;
-        case "MESSAGE":
-          // Add new message to chat messages if it belongs to current chat
+
+        case "message":
           setChatMessages((prev) => [...prev, data.data]);
-          // Also update message list to show latest message
+
           if (messageList && messageList.data) {
             const updatedList = messageList.data.map((chat: any) => {
               if (
@@ -103,8 +86,32 @@ const useWebSocket = (url: string, authToken: string) => {
             setMessageList({ ...messageList, data: updatedList });
           }
           break;
+
+        case "messageAdmin": {
+          setChatMessages((prev) => [...prev, data.data]);
+
+          if (messageList && messageList.data) {
+            const updatedList = messageList.data.map((chat: any) => {
+              if (
+                chat.user.id === data.data.senderId ||
+                chat.user.id === data.data.receiverId
+              ) {
+                return {
+                  ...chat,
+                  lastMessage: {
+                    message: data.data.message,
+                    createdAt: data.data.createdAt,
+                  },
+                };
+              }
+              return chat;
+            });
+            setMessageList({ ...messageList, data: updatedList });
+          }
+
+          break;
+        }
         default:
-          // console.log("📩 Unhandled message event:", data);
       }
     };
 
@@ -126,9 +133,10 @@ const useWebSocket = (url: string, authToken: string) => {
 
   // Function to send messages
   const sendMessage = (data: WebSocketMessage) => {
+    console.log(data);
     if (socket && isConnected) {
       socket.send(JSON.stringify(data));
-      console.log("📤 Message sent:", data);
+      // console.log("📤 Message sent:", data);
     } else {
       console.warn("⚠️ WebSocket not connected.");
     }
@@ -138,18 +146,10 @@ const useWebSocket = (url: string, authToken: string) => {
   const fetchMessagesByUserId = (userId: string) => {
     if (socket && isConnected) {
       const messagesData: any = {
-        event: "FETCH_CHATS",
+        event: "fetchChats",
         receiverId: userId,
       };
       sendMessage(messagesData);
-      setLoading(true);
-    }
-  };
-
-  // Function to fetch driver online/offline status
-  const fetchDriverStatus = () => {
-    if (socket && isConnected) {
-      sendMessage({ event: "FETCH_ALL_DRIVER_ONLINE_OFFLINE" });
       setLoading(true);
     }
   };
@@ -161,8 +161,6 @@ const useWebSocket = (url: string, authToken: string) => {
     loading,
     sendMessage,
     fetchMessagesByUserId,
-    drivers,
-    fetchDriverStatus,
   };
 };
 

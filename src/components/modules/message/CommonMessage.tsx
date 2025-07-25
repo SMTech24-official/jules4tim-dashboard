@@ -25,7 +25,7 @@ export default function CommonMessage() {
     chatMessages,
     loading,
     fetchMessagesByUserId,
-  } = useWebSocket("wss://api.craveit.site/", authToken);
+  } = useWebSocket("wss://api.mentoruuniversity.org/", authToken);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -44,7 +44,7 @@ export default function CommonMessage() {
     if (!selectedUserId || !data.message.trim()) return;
 
     const messageData: any = {
-      event: "MESSAGE",
+      event: "message",
       receiverId: selectedUserId,
       message: data.message,
     };
@@ -80,8 +80,8 @@ export default function CommonMessage() {
             messageList?.data?.map((chat: any) => (
               <button
                 key={chat?.user?.id}
-                className={`flex items-center gap-3 p-4 hover:bg-slate-50 cursor-pointer w-full text-left ${
-                  selectedUserId === chat?.user?.id ? "bg-slate-100" : ""
+                className={`flex items-center gap-3 p-4 hover:bg-[#BFE91F14] cursor-pointer w-full text-left ${
+                  selectedUserId === chat?.user?.id ? "bg-[#BFE91F14]" : ""
                 }`}
                 onClick={() => handleUserSelect(chat?.user?.id, chat?.user)}
               >
@@ -92,7 +92,7 @@ export default function CommonMessage() {
                       alt={chat?.user?.fullName}
                     />
                   ) : (
-                    <CircleUser className="text-3xl w-8 h-8" />
+                    <CircleUser className="text-3xl w-10 h-10" />
                   )}
                 </Avatar>
                 <div className="flex-1 min-w-0">
@@ -154,7 +154,7 @@ export default function CommonMessage() {
                   <div
                     key={msg.id}
                     className={`flex ${
-                      msg.senderId === currentUserId
+                      msg.senderId === "688076bf53abf89dd4dd21c6"
                         ? "justify-end"
                         : "justify-start"
                     }`}
@@ -163,13 +163,13 @@ export default function CommonMessage() {
                       className={`max-w-[70%] rounded-lg p-3 ${
                         msg.senderId === currentUserId
                           ? "bg-green-500 text-white"
-                          : "bg-gray-100"
+                          : "bg-[#BFE91F14]"
                       }`}
                     >
                       <p>{msg.message}</p>
                       <p
                         className={`text-xs mt-1 ${
-                          msg.senderId === currentUserId
+                          msg.senderId === "688076bf53abf89dd4dd21c6"
                             ? "text-green-100"
                             : "text-gray-500"
                         }`}

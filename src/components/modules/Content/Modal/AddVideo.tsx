@@ -87,8 +87,8 @@ const AddVideo = ({ userId, courseId }: { userId: string, courseId: string }) =>
                 <MyFormInput
                   name="thumbnail"
                   type="file"
-                  label="Upload Course Thumnail"
-                  filePlaceholder="Upload Thumnaiul"
+                  label="Upload Course Thumbnail"
+                  filePlaceholder="Upload Thumbnail (600 X 600)"
                   acceptType="image/*"
                 />
                 <MyFormInput

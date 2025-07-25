@@ -40,10 +40,7 @@ const MyFormSelect = ({
   return (
     <div className={cn("relative flex flex-col gap-1 w-full", className)}>
       {label && (
-        <label
-          htmlFor={name}
-          className={cn("text-sm font-medium", labelClassName)}
-        >
+        <label htmlFor={name} className={cn(labelClassName)}>
           {label}
         </label>
       )}

@@ -18,7 +18,6 @@ import {
   LogOut,
   NotepadText,
   Users,
-  ChartNoAxesColumnDecreasing,
   MessageCircleMore,
 } from "lucide-react";
 import Image from "next/image";
@@ -26,7 +25,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { removeCookie } from "@/utils/cookies";
-import { RiUserCommunityLine } from "react-icons/ri";
 import { MdOutlineSubscriptions } from "react-icons/md";
 
 const items = [
@@ -50,16 +48,16 @@ const items = [
     url: "/people",
     icon: Users,
   },
-  {
-    title: "Community",
-    url: "/user",
-    icon: RiUserCommunityLine,
-  },
-  {
-    title: "Analytics",
-    url: "/remove",
-    icon: ChartNoAxesColumnDecreasing,
-  },
+  // {
+  //   title: "Community",
+  //   url: "/user",
+  //   icon: RiUserCommunityLine,
+  // },
+  // {
+  //   title: "Analytics",
+  //   url: "/remove",
+  //   icon: ChartNoAxesColumnDecreasing,
+  // },
   {
     title: "Message For Mentor",
     url: "/message",
