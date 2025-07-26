@@ -7,6 +7,7 @@ import { useCategoryQuery } from "@/redux/features/dashboard/dashboard.api";
 import { useAllCourseQuery } from "@/redux/features/content/content.api";
 import Spinner from "@/components/common/Spinner";
 import CourseCard from "./CourseCard";
+import AddCSVModal from "./Modal/AddCSVModal";
 
 const Content = () => {
   const [category, setCategory] = useState("");
@@ -61,6 +62,7 @@ const Content = () => {
         <div className="flex gap-5">
           <AddCategory />
           <AddCourse />
+          <AddCSVModal />
         </div>
       </div>
 

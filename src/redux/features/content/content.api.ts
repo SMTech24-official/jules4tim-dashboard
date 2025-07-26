@@ -63,6 +63,15 @@ export const videoApi = baseApi.injectEndpoints({
         method: "GET",
       }),
     }),
+
+    uploadCSV: builder.mutation({
+      query: (data) => ({
+        url: "/video/create/csv-upload",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Video"],
+    }),
   }),
 });
 
@@ -71,5 +80,6 @@ export const {
   useAllCourseQuery,
   useCourseQuery,
   useCreateVideoMutation,
-  useCreateCourseMutation
+  useCreateCourseMutation,
+  useUploadCSVMutation,
 } = videoApi;
