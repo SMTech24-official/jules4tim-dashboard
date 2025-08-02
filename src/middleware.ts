@@ -20,7 +20,7 @@ export async function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// "Matching Paths"
+
 export const config = {
   matcher: ["/((?!login|forget-password|_next|api).*)"],
 };
