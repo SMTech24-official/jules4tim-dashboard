@@ -24,7 +24,7 @@ const Header = () => {
         </div>
         <Link href={"/setting"}>
         <Image
-          src={userData?.image || logo}
+          src={userData?.profileImage || logo}
           height={120}
           width={300}
           alt="logo"
