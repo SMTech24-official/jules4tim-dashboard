@@ -10,11 +10,12 @@ import "swiper/css/pagination";
 import { Pagination } from "swiper/modules";
 import categoryIcon from "../../../assets/images/category.png";
 import Image from "next/image";
+import AddCategory from "../Content/Modal/AddCategory";
 
 const VideoCategory = () => {
-  const { data, isFetching } = useCategoryQuery(undefined);
+  const { data, isLoading } = useCategoryQuery(undefined);
 
-  if (isFetching) {
+  if (isLoading) {
     return <Spinner />;
   }
 
@@ -27,6 +28,10 @@ const VideoCategory = () => {
         <Swiper
           slidesPerView={1}
           spaceBetween={10}
+          pagination={{
+            el: ".custom-pagination",
+            clickable: true,
+          }}
           loop={true}
           breakpoints={{
             640: {
@@ -47,14 +52,17 @@ const VideoCategory = () => {
         >
           {category.map((item: any) => (
             <SwiperSlide key={item.id} className="!w-[250px]">
-              <div className="border border-white/50 p-4 rounded-lg space-y-6 bg-secondary">
+              <div className="relative border border-white/50 p-4 rounded-lg space-y-6 bg-secondary">
+                <div className="absolute top-2 right-2">
+                  <AddCategory type="edit" id={item?.id} name={item?.name} />
+                </div>
                 <Image
                   src={categoryIcon}
                   alt="category"
                   width={50}
                   height={50}
                 />
-                <h3 className="font-medium">{item.name}</h3>
+                <h3 className="font-medium truncate">{item?.name}</h3>
 
                 <div className="bg-white rounded-lg p-2 w-full text-black flex gap-2 justify-evenly text-sm">
                   <p>
@@ -72,6 +80,7 @@ const VideoCategory = () => {
           ))}
         </Swiper>
       </div>
+      <div className="custom-pagination flex justify-center mt-4 gap-3" />
     </div>
   );
 };

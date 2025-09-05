@@ -19,11 +19,14 @@ import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
 import { Search } from "lucide-react";
 import StatusModal from "./StatusModal";
+import Pagination from "@/components/common/Pagination";
 
 const PandingPasrot = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isFetching } = usePandingPastorQuery([
     { name: "limit", value: 15 },
+    { name: "page", value: String(currentPage) },
     ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
   ]);
 
@@ -36,7 +39,8 @@ const PandingPasrot = () => {
   }
 
   const users = data?.data?.data;
-  console.log(users);
+  const metaData = data?.data?.meta;
+
   return (
     <div>
       <div className="flex justify-between gap-4 flex-wrap mb-8">
@@ -69,7 +73,7 @@ const PandingPasrot = () => {
       </div>
       <Table>
         <TableHeader>
-          <TableRow className="text-base ">
+          <TableRow className="text-base">
             <TableHead className="w-[100px] text-white">Users</TableHead>
             <TableHead className="text-white">User name</TableHead>
             <TableHead className="text-white">Email</TableHead>
@@ -79,14 +83,14 @@ const PandingPasrot = () => {
         </TableHeader>
         {users?.map((user: any) => (
           <TableBody key={user.id}>
-            <TableRow>
+            <TableRow className="text-base">
               <TableCell className="font-medium">
                 <Image
                   src={user?.profileImage || userIcon}
                   alt="thumbnail"
                   width={500}
                   height={250}
-                  className="w-8 h-8 rounded-full"
+                  className="w-10 h-10 rounded-full"
                 />
               </TableCell>
               <TableCell>{user?.fullName}</TableCell>
@@ -111,6 +115,15 @@ const PandingPasrot = () => {
           </TableBody>
         ))}
       </Table>
+
+      {metaData?.total > 15 && (
+        <Pagination
+          currentPage={metaData?.page}
+          totalItem={metaData?.total}
+          limit={15}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };

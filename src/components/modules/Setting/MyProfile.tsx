@@ -18,7 +18,7 @@ const MyProfile = () => {
       <div className="md:w-2/3 bg-secondary md:p-12 p-5 md:rounded-3xl rounded-2xl border-[3px] border-white text-center md:space-y-7 space-y-4">
         <div className="rounded-full overflow-hidden flex justify-center">
           <Image
-            src={userData?.image || userImg}
+            src={userData?.profileImage || userImg}
             alt="user"
             width={1000}
             height={1000}

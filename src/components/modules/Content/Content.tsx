@@ -8,13 +8,16 @@ import { useAllCourseQuery } from "@/redux/features/content/content.api";
 import Spinner from "@/components/common/Spinner";
 import CourseCard from "./CourseCard";
 import AddCSVModal from "./Modal/AddCSVModal";
+import Pagination from "@/components/common/Pagination";
 
 const Content = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [category, setCategory] = useState("");
   const { data } = useCategoryQuery(undefined);
   const { data: course, isFetching } = useAllCourseQuery([
-    { name: "limit", value: 9 },
+    { name: "limit", value: 12 },
     { name: "categoryId", value: category },
+    { name: "page", value: String(currentPage) },
   ]);
 
   const categoryOptions = data?.data?.map((item: any) => {
@@ -33,7 +36,13 @@ const Content = () => {
   }
 
   const courses = course?.data?.result;
-
+  const metaData = {
+    limit: course?.data?.limit,
+    page: course?.data?.page,
+    skip: course?.data?.skip,
+    total: course?.data?.total,
+  };
+  console.log(metaData);
   return (
     <div className="space-y-8">
       <div className="flex justify-between gap-5">
@@ -60,7 +69,7 @@ const Content = () => {
         </div>
 
         <div className="flex gap-5">
-          <AddCategory />
+          <AddCategory type="create"/>
           <AddCourse />
           <AddCSVModal />
         </div>
@@ -71,6 +80,15 @@ const Content = () => {
           <CourseCard key={item.id} data={item} />
         ))}
       </div>
+
+      {metaData?.total > 12 && (
+        <Pagination
+          currentPage={metaData?.page}
+          totalItem={metaData?.total}
+          limit={12}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };

@@ -149,3 +149,10 @@
   }
 }
 
+.custom-pagination .swiper-pagination-bullet {
+  @apply bg-gray-300; 
+}
+
+.custom-pagination .swiper-pagination-bullet-active {
+  @apply bg-primary; 
+}

@@ -5,6 +5,8 @@ import { TbLockPassword } from "react-icons/tb";
 import MyProfile from "./MyProfile";
 import ChangePassword from "./ChangePassword";
 import ApiList from "./ApiList";
+import { SquarePen } from "lucide-react";
+import EditProfile from "./EditProfile";
 
 const SettingTab = () => {
   return (
@@ -15,6 +17,12 @@ const SettingTab = () => {
           className="md:text-2xl !rounded-none data-[state=active]:bg-transparent  data-[state=active]:border-b-[2px] data-[state=active]:border-white data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:data-[state=active]:text-white"
         >
           <IoCalendarOutline className="mr-2" /> My Profile
+        </TabsTrigger>
+        <TabsTrigger
+          value="editProfile"
+          className="md:text-2xl !rounded-none data-[state=active]:bg-transparent  data-[state=active]:border-b-[2px] data-[state=active]:border-white data-[state=active]:shadow-none data-[state=active]:rounded-none data-[state=active]:data-[state=active]:text-white"
+        >
+          <SquarePen className="mr-2" /> Edit Profile
         </TabsTrigger>
         <TabsTrigger
           value="password"
@@ -31,6 +39,9 @@ const SettingTab = () => {
       </TabsList>
       <TabsContent value="myProfile">
         <MyProfile />
+      </TabsContent>
+      <TabsContent value="editProfile">
+        <EditProfile />
       </TabsContent>
       <TabsContent value="password">
         <ChangePassword />

@@ -81,7 +81,7 @@ const AddCourse = () => {
         </DialogTrigger>
         <DialogContent className="bg-secondary text-white h-5/6 overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-xl">Create New Category</DialogTitle>
+            <DialogTitle className="text-xl">Create New Course</DialogTitle>
             <DialogDescription></DialogDescription>
             <div>
               <MyFormWrapper onSubmit={handleSubmit} className="space-y-3">
@@ -103,8 +103,8 @@ const AddCourse = () => {
                 <MyFormInput
                   name="thumbnail"
                   type="file"
-                  label="Upload Course Thumnail"
-                  filePlaceholder="Upload Thumnaiul"
+                  label="Upload Course Thumbnail"
+                  filePlaceholder="Upload Thumbnail (1280 × 720)"
                   acceptType="image/*"
                 />
                 <MyFormInput

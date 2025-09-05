@@ -19,13 +19,16 @@ import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
 import { ChevronDown, Search } from "lucide-react";
 import StatusModal from "./StatusModal";
+import Pagination from "@/components/common/Pagination";
 
 const People = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const [userId, setUserId] = useState<string>("");
   const [category, setCategory] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const { data, isFetching } = useAllUserQuery([
     { name: "limit", value: 15 },
+    { name: "page", value: String(currentPage) },
     ...(category ? [{ name: "role", value: category }] : []),
     ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
   ]);
@@ -54,6 +57,7 @@ const People = () => {
   }
 
   const users = data?.data?.data;
+  const metaData = data?.data?.meta;
 
   return (
     <div>
@@ -114,14 +118,14 @@ const People = () => {
         </TableHeader>
         {users?.map((user: any) => (
           <TableBody key={user.id}>
-            <TableRow>
+            <TableRow className="text-base">
               <TableCell className="font-medium">
                 <Image
                   src={user?.profileImage || userIcon}
                   alt="thumbnail"
                   width={500}
                   height={250}
-                  className="w-8 h-8 rounded-full"
+                  className="w-10 h-10 rounded-full"
                 />
               </TableCell>
               <TableCell>{user?.fullName}</TableCell>
@@ -160,6 +164,15 @@ const People = () => {
           </TableBody>
         ))}
       </Table>
+
+      {metaData?.total > 15 && (
+        <Pagination
+          currentPage={metaData?.page}
+          totalItem={metaData?.total}
+          limit={15}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };

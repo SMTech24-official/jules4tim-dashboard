@@ -26,6 +26,7 @@ import { useAppDispatch } from "@/redux/hooks";
 import { logout } from "@/redux/features/auth/authSlice";
 import { removeCookie } from "@/utils/cookies";
 import { MdOutlineSubscriptions } from "react-icons/md";
+import Link from "next/link";
 
 const items = [
   {
@@ -48,16 +49,6 @@ const items = [
     url: "/people",
     icon: Users,
   },
-  // {
-  //   title: "Community",
-  //   url: "/user",
-  //   icon: RiUserCommunityLine,
-  // },
-  // {
-  //   title: "Analytics",
-  //   url: "/remove",
-  //   icon: ChartNoAxesColumnDecreasing,
-  // },
   {
     title: "Message For Mentor",
     url: "/message",
@@ -105,10 +96,10 @@ const SideBar = () => {
                       : ""
                   }`}
                 >
-                  <a href={item.url}>
+                  <Link href={item.url}>
                     <item.icon className="!w-5 !h-5 mr-2" />
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             ))}

@@ -19,6 +19,15 @@ export const dashboardApi = baseApi.injectEndpoints({
       providesTags: ["Category"],
     }),
 
+    updateCategory: builder.mutation({
+      query: (args) => ({
+        url: `/category/${args.id}`,
+        method: "PUT",
+        body: args.data,
+      }),
+      invalidatesTags: ["Category"],
+    }),
+
     userChartData: builder.query({
       query: () => ({
         url: "/dashboard/subscribers-per-week",
@@ -55,6 +64,7 @@ export const dashboardApi = baseApi.injectEndpoints({
 export const {
   useCreateCategoryMutation,
   useCategoryQuery,
+  useUpdateCategoryMutation,
   useUserChartDataQuery,
   useOverViewQuery,
   useApiListQuery,

@@ -34,7 +34,7 @@ const AddMentorModal = () => {
       toast.success("Uploaded successfully", { id: toastId });
       setOpen(false);
     } catch (err: any) {
-      toast.error(err.data?.message || "Faild to Upload", { id: toastId });
+      toast.error(err.data?.message || "Failed to Upload", { id: toastId });
     }
   };
 
