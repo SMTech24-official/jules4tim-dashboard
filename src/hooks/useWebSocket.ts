@@ -69,7 +69,7 @@ const useWebSocket = (url: string, authToken: string) => {
           setChatMessages((prev) => [...prev, data.data]);
 
           if (messageList && messageList.data) {
-            const updatedList = messageList.data.map((chat: any) => {
+            const updatedList = messageList.data?.map((chat: any) => {
               if (
                 chat.user.id === data.data.senderId ||
                 chat.user.id === data.data.receiverId
@@ -91,7 +91,7 @@ const useWebSocket = (url: string, authToken: string) => {
           setChatMessages((prev) => [...prev, data.data]);
 
           if (messageList && messageList.data) {
-            const updatedList = messageList.data.map((chat: any) => {
+            const updatedList = messageList.data?.map((chat: any) => {
               if (
                 chat.user.id === data.data.senderId ||
                 chat.user.id === data.data.receiverId

@@ -21,7 +21,7 @@ interface ChatListProps {
 export function ChatList({ chats, onSelectChat, activeChat }: ChatListProps) {
   return (
     <div className="space-y-1 py-2">
-      {chats.map((chat) => (
+      {chats?.map((chat) => (
         <button
           key={chat.id}
           className={cn(

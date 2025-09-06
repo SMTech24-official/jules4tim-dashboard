@@ -150,7 +150,7 @@ export default function CommonMessage() {
                   <p>No messages yet. Start a conversation!</p>
                 </div>
               ) : (
-                chatMessages.map((msg: any) => (
+                chatMessages?.map((msg: any) => (
                   <div
                     key={msg.id}
                     className={`flex ${

@@ -29,8 +29,17 @@ const AddMentorModal = () => {
 
   const handleSubmit = async (data: FieldValues) => {
     const toastId = toast.loading("Uploading...");
+
+    const formData = new FormData();
+
+    const { image, ...rest } = data;
+
+    formData.append("data", JSON.stringify(rest));
+
+    formData.append("image", image);
+
     try {
-      await addMentor({ ...data, role: "MENTOR" }).unwrap();
+      await addMentor(formData).unwrap();
       toast.success("Uploaded successfully", { id: toastId });
       setOpen(false);
     } catch (err: any) {
@@ -70,6 +79,12 @@ const AddMentorModal = () => {
                   type="password"
                   label="Mentor Password"
                   placeholder="Enter password"
+                />
+                <MyFormInput
+                  type="file"
+                  acceptType="image/*"
+                  name="image"
+                  label="Mentor Image"
                 />
                 <MyBtn name="Submit" width="w-full" />
               </MyFormWrapper>

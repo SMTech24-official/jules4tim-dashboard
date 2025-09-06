@@ -86,7 +86,7 @@ const SideBar = () => {
         </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu className="hover:border-primary hover:rounded-none hover:bg-none">
-            {items.map((item) => (
+            {items?.map((item) => (
               <SidebarMenuItem key={item.title} className="hover:border-x-2">
                 <SidebarMenuButton
                   asChild

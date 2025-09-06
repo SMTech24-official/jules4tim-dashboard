@@ -50,7 +50,7 @@ const VideoCategory = () => {
           modules={[Pagination]}
           className="mySwiper"
         >
-          {category.map((item: any) => (
+          {category?.map((item: any) => (
             <SwiperSlide key={item.id} className="!w-[250px]">
               <div className="relative border border-white/50 p-4 rounded-lg space-y-6 bg-secondary">
                 <div className="absolute top-2 right-2">
