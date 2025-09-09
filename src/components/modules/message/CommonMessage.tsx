@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { CircleUser, Send } from "lucide-react";
+import { CircleUser, RefreshCcw, Search, Send } from "lucide-react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/redux/hooks";
@@ -12,12 +12,26 @@ import type { FieldValues } from "react-hook-form";
 import { useEffect, useState, useRef } from "react";
 import useWebSocket from "@/hooks/useWebSocket";
 import { format } from "date-fns";
+import { useAllUserQuery } from "@/redux/features/users/users.api";
+import { useGetMeQuery } from "@/redux/features/auth/authApi";
+import Spinner from "@/components/common/Spinner";
 
 export default function CommonMessage() {
   const authToken: any = useAppSelector(seletCurrentToken);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [selectedUser, setSelectedUser] = useState<any>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedList, setSelectedList] = useState<string>("recent");
+  console.log(selectedUser);
+  const { data, isLoading } = useAllUserQuery([
+    { name: "limit", value: 30 },
+    ...(searchTerm ? [{ name: "searchTerm", value: searchTerm }] : []),
+  ]);
+  const users = data?.data?.data;
+
+  const { data: myData } = useGetMeQuery(undefined);
+  const userData = myData?.data;
 
   const {
     sendMessage,
@@ -55,8 +69,12 @@ export default function CommonMessage() {
     return { message: "" };
   };
 
+  const handleSearch = (data: FieldValues) => {
+    setSearchTerm(data.search);
+  };
+
   // Get current user ID from auth (assuming it's available)
-  const currentUserId = useAppSelector((state) => state.auth?.user?.id);
+  const currentUserId = userData?.commonId;
 
   return (
     <div
@@ -72,49 +90,170 @@ export default function CommonMessage() {
           </div>
         </div>
 
-        {/* Chat List */}
-        <div className="overflow-auto flex-1">
-          {loading && !messageList ? (
-            <p className="p-4">🔄 Loading chats...</p>
-          ) : (
-            messageList?.data?.map((chat: any) => (
-              <button
-                key={chat?.user?.id}
-                className={`flex items-center gap-3 p-4 hover:bg-[#BFE91F14] cursor-pointer w-full text-left ${
-                  selectedUserId === chat?.user?.id ? "bg-[#BFE91F14]" : ""
-                }`}
-                onClick={() => handleUserSelect(chat?.user?.id, chat?.user)}
-              >
-                <Avatar>
-                  {chat?.user?.profileImage ? (
-                    <AvatarImage
-                      src={chat?.user?.profileImage}
-                      alt={chat?.user?.fullName}
-                    />
-                  ) : (
-                    <CircleUser className="text-3xl w-10 h-10" />
-                  )}
-                </Avatar>
-                <div className="flex-1 min-w-0">
-                  <div className="flex justify-between items-start">
-                    <span className="font-medium">{chat?.user?.fullName}</span>
-                    {chat?.lastMessage?.createdAt && (
-                      <span className="text-xs text-gray-500">
-                        {format(
-                          new Date(chat?.lastMessage?.createdAt),
-                          "HH:mm"
-                        )}
-                      </span>
-                    )}
-                  </div>
-                  <p className="text-sm text-start truncate">
-                    {chat?.lastMessage?.message}
-                  </p>
-                </div>
-              </button>
-            ))
-          )}
+        <div className="flex gap-2 my-3 mx-2">
+          <p
+            onClick={() => setSelectedList("recent")}
+            className={`p-2 rounded-sm cursor-pointer ${
+              selectedList === "recent" ? "bg-green-800" : "bg-black/20"
+            }`}
+          >
+            Recent
+          </p>
+          <p
+            onClick={() => setSelectedList("all")}
+            className={`p-2 rounded-sm cursor-pointer ${
+              selectedList === "all" ? "bg-green-800" : "bg-black/20"
+            }`}
+          >
+            All User
+          </p>
+
+          {/* {
+            selectedList === "all" &&         <div className="flex gap-7 items-center">
+          <div className="flex gap-1 items-center text-primary border-b border-primary text-xl space-x-3 pb-2">
+            <h3>ALL</h3>
+            <select
+              value={category}
+              onChange={handleCategoryChange}
+              className="bg-transparent px-2 py-1 text-primary"
+            >
+              <option className="bg-secondary" value="USER">
+                USERS
+              </option>
+              {userOptions?.map((item: any) => (
+                <option key={item} className="bg-secondary" value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+            <h3>({users?.length})</h3>
+          </div>
+
         </div>
+          } */}
+        </div>
+
+        {selectedList === "all" && (
+          <div className="flex gap-3">
+            <MyFormWrapper onSubmit={handleSearch} className="flex items-start">
+              <MyFormInput
+                name="search"
+                inputClassName="rounded-none p-2"
+                placeholder="Search..."
+              />
+
+              <button className="p-[9px] border border-white/70">
+                <Search />
+              </button>
+            </MyFormWrapper>
+
+            <div className="inline-block">
+              <button
+                onClick={() => setSearchTerm("")}
+                className="p-[9px] border border-white/70"
+              >
+                <RefreshCcw />
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Chat List */}
+        {selectedList === "recent" ? (
+          <div className="overflow-auto flex-1">
+            {loading && !messageList ? (
+              <p className="p-4">
+                {" "}
+                <Spinner />
+              </p>
+            ) : (
+              messageList?.data?.map((chat: any) => (
+                <button
+                  key={chat?.user?.id}
+                  className={`flex items-center gap-3 p-4 hover:bg-[#BFE91F14] cursor-pointer w-full text-left ${
+                    selectedUserId === chat?.user?.id ? "bg-[#BFE91F14]" : ""
+                  }`}
+                  onClick={() => handleUserSelect(chat?.user?.id, chat?.user)}
+                >
+                  <Avatar>
+                    {chat?.user?.profileImage ? (
+                      <AvatarImage
+                        src={chat?.user?.profileImage}
+                        alt={chat?.user?.fullName}
+                      />
+                    ) : (
+                      <CircleUser className="text-3xl w-10 h-10" />
+                    )}
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start">
+                      <span className="font-medium">
+                        {chat?.user?.fullName}
+                      </span>
+                      {chat?.lastMessage?.createdAt && (
+                        <span className="text-xs text-gray-500">
+                          {format(
+                            new Date(chat?.lastMessage?.createdAt),
+                            "HH:mm"
+                          )}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-start truncate">
+                      {chat?.lastMessage?.message}
+                    </p>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        ) : (
+          <div className="overflow-auto flex-1">
+            {isLoading ? (
+              <p className="p-4">
+                {" "}
+                <Spinner />
+              </p>
+            ) : (
+              users?.map((chat: any) => (
+                <button
+                  key={chat?.id}
+                  className={`flex items-center gap-3 p-4 hover:bg-[#BFE91F14] cursor-pointer w-full text-left ${
+                    selectedUserId === chat?.id ? "bg-[#BFE91F14]" : ""
+                  }`}
+                  onClick={() => handleUserSelect(chat?.id, chat)}
+                >
+                  <Avatar>
+                    {chat?.profileImage ? (
+                      <AvatarImage
+                        src={chat?.profileImage}
+                        alt={chat?.fullName}
+                      />
+                    ) : (
+                      <CircleUser className="text-3xl w-10 h-10" />
+                    )}
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex justify-between items-start">
+                      <span className="font-medium">{chat?.fullName}</span>
+                      {chat?.lastMessage?.createdAt && (
+                        <span className="text-xs text-gray-500">
+                          {format(
+                            new Date(chat?.lastMessage?.createdAt),
+                            "HH:mm"
+                          )}
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-sm text-start truncate">
+                      {chat?.lastMessage?.message}
+                    </p>
+                  </div>
+                </button>
+              ))
+            )}
+          </div>
+        )}
       </div>
 
       {/* Main Chat Area */}
@@ -129,7 +268,7 @@ export default function CommonMessage() {
                     alt={selectedUser?.fullName}
                   />
                 ) : (
-                  <CircleUser className="text-3xl w-8 h-8" />
+                  <CircleUser className="text-3xl w-10 h-10" />
                 )}
               </Avatar>
               <div className="flex-1">
@@ -154,7 +293,7 @@ export default function CommonMessage() {
                   <div
                     key={msg.id}
                     className={`flex ${
-                      msg.senderId === "688076bf53abf89dd4dd21c6"
+                      msg.senderId === currentUserId
                         ? "justify-end"
                         : "justify-start"
                     }`}
@@ -162,14 +301,14 @@ export default function CommonMessage() {
                     <div
                       className={`max-w-[70%] rounded-lg p-3 ${
                         msg.senderId === currentUserId
-                          ? "bg-green-500 text-white"
+                          ? "bg-green-800 text-white"
                           : "bg-[#BFE91F14]"
                       }`}
                     >
                       <p>{msg.message}</p>
                       <p
                         className={`text-xs mt-1 ${
-                          msg.senderId === "688076bf53abf89dd4dd21c6"
+                          msg.senderId === currentUserId
                             ? "text-green-100"
                             : "text-gray-500"
                         }`}
@@ -196,10 +335,10 @@ export default function CommonMessage() {
                 <Button
                   type="submit"
                   size="icon"
-                  className="bg-green-600 hover:bg-green-700 py-5 px-5"
+                  className="bg-green-800 hover:bg-green-700 p-6"
                   disabled={loading}
                 >
-                  <Send className="h-5 w-5" />
+                  <Send className="h-6 w-6" />
                 </Button>
               </MyFormWrapper>
             </div>

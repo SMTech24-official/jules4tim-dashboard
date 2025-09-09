@@ -52,12 +52,21 @@ const SingleCourse = () => {
             <h3 className="text-lg">{courseData?.mentor?.user?.fullName}</h3>
 
             <div className="flex items-center p-2 border border-white/50 rounded-lg gap-2">
-              <Mail className="!w-6 !h-6" /> {courseData?.mentor?.user?.email}
+              <Mail className="!w-6 !h-6" />
+              <a
+                href={`mailto:${courseData?.mentor?.user?.email}`}
+                className="hover:underline"
+              >
+                {courseData?.mentor?.user?.email}
+              </a>
             </div>
           </div>
         </div>
 
-        <AddVideo userId={courseData?.mentor?.user?.id} courseId={courseData?.id}/>
+        <AddVideo
+          userId={courseData?.mentor?.user?.id}
+          courseId={courseData?.id}
+        />
       </div>
 
       <div className="border-b border-white/50 mb-6 pb-3">

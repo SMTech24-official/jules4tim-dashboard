@@ -24,7 +24,7 @@ const AddMentorModal = () => {
 
   const roleOptions = [
     { value: "MENTOR", label: "Mentor", keyOption: "MENTOR" },
-    { value: "BOTH", label: "Mentor & Pastor", keyOption: "BOTH" },
+    // { value: "BOTH", label: "Mentor & Pastor", keyOption: "BOTH" },
   ];
 
   const handleSubmit = async (data: FieldValues) => {
@@ -85,6 +85,7 @@ const AddMentorModal = () => {
                   acceptType="image/*"
                   name="image"
                   label="Mentor Image"
+                  filePlaceholder="Upload Image (600x600)"
                 />
                 <MyBtn name="Submit" width="w-full" />
               </MyFormWrapper>

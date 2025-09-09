@@ -58,6 +58,13 @@ export const dashboardApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Api"],
     }),
+
+    subscriber: builder.query({
+      query: () => ({
+        url: "/subscription",
+        method: "GET",
+      }),
+    }),
   }),
 });
 
@@ -69,4 +76,5 @@ export const {
   useOverViewQuery,
   useApiListQuery,
   useCreateApiMutation,
+  useSubscriberQuery,
 } = dashboardApi;

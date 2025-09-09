@@ -32,7 +32,14 @@ const EditProfile = () => {
       formData.append("image", data.image);
     }
 
-    formData.append("data", JSON.stringify({ fullName: data.fullName }));
+    formData.append(
+      "data",
+      JSON.stringify({
+        fullName: data.fullName,
+        phoneNumber: data.phoneNumber,
+        address: data.address,
+      })
+    );
 
     try {
       await updateUser(formData).unwrap();
@@ -63,13 +70,13 @@ const EditProfile = () => {
               alt="user"
               width={1000}
               height={1000}
-              className="w-[130px] h-[105px] rounded-lg"
+              className="w-[130px] h-[130px] rounded-lg"
             />
             <MyFormInput
               type="file"
               acceptType="image/*"
               name="image"
-              placeholder="Name..."
+              filePlaceholder="Upload Image (600 x 600)"
               required={false}
             />
           </div>

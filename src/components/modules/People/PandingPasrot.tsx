@@ -71,50 +71,54 @@ const PandingPasrot = () => {
           </MyFormWrapper>
         </div>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow className="text-base">
-            <TableHead className="w-[100px] text-white">Users</TableHead>
-            <TableHead className="text-white">User name</TableHead>
-            <TableHead className="text-white">Email</TableHead>
-            <TableHead className="text-white">Status</TableHead>
-            <TableHead className=" text-white">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        {users?.map((user: any) => (
-          <TableBody key={user.id}>
+      {users.length < 1 ? (
+        <p className="text-center text-xl font-medium">No Data Found</p>
+      ) : (
+        <Table>
+          <TableHeader>
             <TableRow className="text-base">
-              <TableCell className="font-medium">
-                <Image
-                  src={user?.profileImage || userIcon}
-                  alt="thumbnail"
-                  width={500}
-                  height={250}
-                  className="w-10 h-10 rounded-full"
-                />
-              </TableCell>
-              <TableCell>{user?.fullName}</TableCell>
-              <TableCell>{user?.email}</TableCell>
-              <TableCell>{user?.status}</TableCell>
-              <TableCell className="flex gap-3 items-center">
-                <StatusModal
-                  id={user?.id}
-                  status="ACTIVATE"
-                  btnName="Activate"
-                  actionFor="Pastor"
-                  btnType="btn"
-                />
-                <StatusModal
-                  id={user?.id}
-                  status="ACTIVATE"
-                  actionFor="Pastor"
-                  btnType="icon"
-                />
-              </TableCell>
+              <TableHead className="w-[100px] text-white">Users</TableHead>
+              <TableHead className="text-white">User name</TableHead>
+              <TableHead className="text-white">Email</TableHead>
+              <TableHead className="text-white">Status</TableHead>
+              <TableHead className=" text-white">Actions</TableHead>
             </TableRow>
-          </TableBody>
-        ))}
-      </Table>
+          </TableHeader>
+          {users?.map((user: any) => (
+            <TableBody key={user.id}>
+              <TableRow className="text-base">
+                <TableCell className="font-medium">
+                  <Image
+                    src={user?.profileImage || userIcon}
+                    alt="thumbnail"
+                    width={500}
+                    height={250}
+                    className="w-10 h-10 rounded-full"
+                  />
+                </TableCell>
+                <TableCell>{user?.fullName}</TableCell>
+                <TableCell>{user?.email}</TableCell>
+                <TableCell>{user?.status}</TableCell>
+                <TableCell className="flex gap-3 items-center">
+                  <StatusModal
+                    id={user?.id}
+                    status="ACTIVATE"
+                    btnName="Activate"
+                    actionFor="Pastor"
+                    btnType="btn"
+                  />
+                  <StatusModal
+                    id={user?.id}
+                    status="ACTIVATE"
+                    actionFor="Pastor"
+                    btnType="icon"
+                  />
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ))}
+        </Table>
+      )}
 
       {metaData?.total > 15 && (
         <Pagination

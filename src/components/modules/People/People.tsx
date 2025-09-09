@@ -17,16 +17,16 @@ import Link from "next/link";
 import MyFormWrapper from "@/components/form/MyFormWrapper";
 import MyFormInput from "@/components/form/MyFormInput";
 import { FieldValues } from "react-hook-form";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, RefreshCcw, Search } from "lucide-react";
 import StatusModal from "./StatusModal";
 import Pagination from "@/components/common/Pagination";
 
 const People = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [userId, setUserId] = useState<string>("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("USER");
   const [searchTerm, setSearchTerm] = useState("");
-  const { data, isFetching } = useAllUserQuery([
+  const { data, isLoading } = useAllUserQuery([
     { name: "limit", value: 15 },
     { name: "page", value: String(currentPage) },
     ...(category ? [{ name: "role", value: category }] : []),
@@ -52,7 +52,7 @@ const People = () => {
     }
   };
 
-  if (isFetching) {
+  if (isLoading) {
     return <Spinner />;
   }
 
@@ -70,7 +70,7 @@ const People = () => {
               onChange={handleCategoryChange}
               className="bg-transparent px-2 py-1 text-primary"
             >
-              <option className="bg-secondary" value="">
+              <option className="bg-secondary" value="USER">
                 USERS
               </option>
               {userOptions?.map((item: any) => (
@@ -92,7 +92,7 @@ const People = () => {
           </Link>
         </div>
 
-        <div className="">
+        <div className="flex gap-3">
           <MyFormWrapper onSubmit={handleSubmit} className="flex items-start">
             <MyFormInput
               name="search"
@@ -104,66 +104,80 @@ const People = () => {
               <Search />
             </button>
           </MyFormWrapper>
+
+          <div className="inline-block">
+            <button
+              onClick={() => setSearchTerm("")}
+              className="p-[13px] border border-white/70"
+            >
+              <RefreshCcw />
+            </button>
+          </div>
         </div>
       </div>
-      <Table>
-        <TableHeader>
-          <TableRow className="text-base">
-            <TableHead className="w-[100px] text-white">Users</TableHead>
-            <TableHead className="text-white">User name</TableHead>
-            <TableHead className="text-white">Email</TableHead>
-            <TableHead className="text-white">Status</TableHead>
-            <TableHead className=" text-white">Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        {users?.map((user: any) => (
-          <TableBody key={user.id}>
-            <TableRow className="text-base">
-              <TableCell className="font-medium">
-                <Image
-                  src={user?.profileImage || userIcon}
-                  alt="thumbnail"
-                  width={500}
-                  height={250}
-                  className="w-10 h-10 rounded-full"
-                />
-              </TableCell>
-              <TableCell>{user?.fullName}</TableCell>
-              <TableCell>{user?.email}</TableCell>
-              <TableCell>{user?.status}</TableCell>
-              <TableCell>
-                <div className="relative">
-                  <div
-                    onClick={() => handleStatus(user?.id)}
-                    className="flex gap-2 items-center cursor-pointer"
-                  >
-                    {user?.actions} <ChevronDown />
-                  </div>
 
-                  <div
-                    className={`${
-                      userId !== user?.id ? "hidden" : ""
-                    } absolute top-6 border border-white/50 p-5  flex gap-1 flex-col bg-[#001a26] rounded-sm z-30 space-y-3`}
-                  >
-                    <StatusModal
-                      id={user?.id}
-                      status="ACTIVATE"
-                      btnName="Active"
-                      btnType="btn"
-                    />
-                    <StatusModal
-                      id={user?.id}
-                      status="DEACTIVATE"
-                      btnName="Deactivate"
-                      btnType="btn"
-                    />
-                  </div>
-                </div>
-              </TableCell>
+      {users.length < 1 ? (
+        <p className="text-center text-xl font-medium">No Data Found</p>
+      ) : (
+        <Table>
+          <TableHeader>
+            <TableRow className="text-base">
+              <TableHead className="w-[100px] text-white">Users</TableHead>
+              <TableHead className="text-white">User name</TableHead>
+              <TableHead className="text-white">Email</TableHead>
+              <TableHead className="text-white">Status</TableHead>
+              <TableHead className=" text-white">Actions</TableHead>
             </TableRow>
-          </TableBody>
-        ))}
-      </Table>
+          </TableHeader>
+          {users?.map((user: any) => (
+            <TableBody key={user.id}>
+              <TableRow className="text-base">
+                <TableCell className="font-medium">
+                  <Image
+                    src={user?.profileImage || userIcon}
+                    alt="thumbnail"
+                    width={500}
+                    height={250}
+                    className="w-10 h-10 rounded-full"
+                  />
+                </TableCell>
+                <TableCell>{user?.fullName}</TableCell>
+                <TableCell>{user?.email}</TableCell>
+                <TableCell>{user?.status}</TableCell>
+                <TableCell>
+                  <div className="relative">
+                    <div
+                      onClick={() => handleStatus(user?.id)}
+                      className="flex gap-2 items-center cursor-pointer"
+                    >
+                      {user?.actions} <ChevronDown />
+                    </div>
+
+                    <div
+                      className={`${
+                        userId !== user?.id ? "hidden" : ""
+                      } absolute top-6 border border-white/50 p-5  flex gap-1 flex-col bg-[#001a26] rounded-sm z-30 space-y-3`}
+                    >
+                      <StatusModal
+                        id={user?.id}
+                        status="ACTIVATE"
+                        btnName="Active"
+                        btnType="btn"
+                      />
+                      <StatusModal
+                        id={user?.id}
+                        status="DEACTIVATE"
+                        btnName="Deactivate"
+                        btnType="btn"
+                      />
+                    </div>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ))}
+        </Table>
+      )}
 
       {metaData?.total > 15 && (
         <Pagination

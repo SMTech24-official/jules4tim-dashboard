@@ -23,7 +23,6 @@ const SingleMentor = () => {
     <div className="my-6 border border-white/50 rounded-lg bg-secondary p-5">
       <div className="flex gap-3 justify-between items-center">
         <h2 className="text-xl font-medium">Details Overview</h2>
-        
       </div>
 
       <div className="mt-5 mb-8 flex gap-3">
@@ -37,9 +36,12 @@ const SingleMentor = () => {
 
         <div className="space-y-3">
           <h3 className="text-lg">{userData?.fullName}</h3>
-
+ 
           <div className="flex items-center p-2 border border-white/50 rounded-lg gap-2">
-            <Mail className="!w-6 !h-6" /> {userData?.email}
+            <Mail className="!w-6 !h-6" />
+            <a href={`mailto:${userData?.email}`} className="hover:underline">
+              {userData?.email}
+            </a>
           </div>
 
           <h3 className="text-lg">

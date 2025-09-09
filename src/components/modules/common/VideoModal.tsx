@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import Image from "next/image";
 import { useState, useMemo } from "react";
+import { format } from "date-fns";
 
 type VideoItem = {
   id: string | number;
@@ -17,6 +18,7 @@ type VideoItem = {
   thumbnail: string;
   introVideo: string;
   videoUrl: string;
+  mentorProfileImage: string;
   outroVideo: string;
   createdAt: string | Date;
 };
@@ -47,23 +49,34 @@ const VideoModal = ({ data }: Props) => {
   const handleModalChange = (state: boolean) => {
     setOpen(state);
     if (!state) {
-      setCurrentIndex(0); 
+      setCurrentIndex(0);
     }
   };
 
   const currentSrc = videoQueue[currentIndex];
-
+  console.log(data);
   return (
     <div>
       <Dialog open={open} onOpenChange={handleModalChange}>
         <DialogTrigger className="w-full">
-          <Image
-            src={data.thumbnail}
-            alt="thumbnail"
-            width={500}
-            height={250}
-            className="w-full h-56 rounded-lg"
-          />
+          <div className="space-y-2">
+            <Image
+              src={data.thumbnail}
+              alt="thumbnail"
+              width={500}
+              height={250}
+              className="w-full h-56 rounded-lg"
+            />
+            <div className="space-y-1 text-start px-2">
+              <p className="line-clamp-1">{data.title}</p>
+              <div className="flex justify-between">
+                <p>Mentors - {data?.mentorName}</p>
+                <p className="bg-black/20 px-2 rounded-sm">
+                  {format(new Date(data.createdAt), "MMM d, yyyy")}
+                </p>
+              </div>
+            </div>
+          </div>
         </DialogTrigger>
         <DialogContent className="bg-secondary text-white">
           <DialogHeader>
@@ -72,7 +85,7 @@ const VideoModal = ({ data }: Props) => {
             <div className="w-full h-auto max-w-3xl mx-auto">
               {currentSrc ? (
                 <video
-                  key={currentSrc} 
+                  key={currentSrc}
                   className="w-full h-auto rounded-2xl shadow-lg"
                   src={currentSrc}
                   controls

@@ -88,7 +88,7 @@ const AddVideo = ({ userId, courseId }: { userId: string, courseId: string }) =>
                   name="thumbnail"
                   type="file"
                   label="Upload Course Thumbnail"
-                  filePlaceholder="Upload Thumbnail (600 X 600)"
+                  filePlaceholder="Upload Thumbnail (1280 × 720)"
                   acceptType="image/*"
                 />
                 <MyFormInput
@@ -101,7 +101,7 @@ const AddVideo = ({ userId, courseId }: { userId: string, courseId: string }) =>
                   type="textarea"
                   name="description"
                   label="Description"
-                  placeholder="Wirte here"
+                  placeholder="Write here"
                 />
 
                 <MyBtn name="Create" width="w-full" />

@@ -34,12 +34,12 @@ const MentorTab = () => {
           >
             Upload Video
           </TabsTrigger>
-          <TabsTrigger
+          {/* <TabsTrigger
             value="Live Video"
             className="text-base font-normal text-gray-500 data-[state=active]:text-primary data-[state=active]:bg-transparent data-[state=active]:border-b-2 data-[state=active]:border-primary rounded-none"
           >
             Live Video
-          </TabsTrigger>
+          </TabsTrigger> */}
         </TabsList>
         <TabsContent value="Overall Analysis">
           <h3 className="text-xl mb-9">Video Upload Per Month</h3>
@@ -52,12 +52,12 @@ const MentorTab = () => {
             ))}
           </div>
         </TabsContent>
-        <TabsContent value="Live Video">
+        {/* <TabsContent value="Live Video">
           Change your password here. Lorem ipsum, dolor sit amet consectetur
           adipisicing elit. Doloremque, explicabo in amet odio, ducimus sit illo
           nesciunt quam neque quaerat porro. Obcaecati accusamus temporibus
           delectus distinctio ea eligendi laborum nobis?
-        </TabsContent>
+        </TabsContent> */}
       </Tabs>
     </div>
   );
