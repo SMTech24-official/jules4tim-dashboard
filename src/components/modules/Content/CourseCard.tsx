@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-'use client'
+"use client";
 import Image from "next/image";
 import { format } from "date-fns";
 import Link from "next/link";
+import userIcon from "@/assets/placeholders/image_placeholder.png";
 
 type VideoItem = {
   id: string | number;
@@ -30,13 +31,15 @@ const CourseCard = ({ data }: Props) => {
 
       <div className="flex justify-between gap-2">
         <div className="space-y-1">
-          <p>{data.title}</p>
-          <p>Mentors - {data?.mentor?.user?.fullName}</p>
+          <p className="line-clamp-1">{data.title}</p>
+          <p className="line-clamp-1">
+            Mentors - {data?.mentor?.user?.fullName}
+          </p>
         </div>
 
         <div className="flex gap-1 items-center">
           <Image
-            src={data.thumbnail}
+            src={data?.mentor?.user?.profileImage || userIcon}
             alt="thumbnail"
             width={500}
             height={250}
@@ -44,7 +47,7 @@ const CourseCard = ({ data }: Props) => {
           />
 
           <div className="space-y-1 text-sm">
-            <p>{data?.mentor?.user?.fullName}</p>
+            <p className="line-clamp-1">{data?.mentor?.user?.fullName}</p>
             <p>{format(new Date(data.createdAt), "MMM d, yyyy")}</p>
           </div>
         </div>

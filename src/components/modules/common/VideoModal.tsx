@@ -11,11 +11,13 @@ import Image from "next/image";
 import { useState, useMemo } from "react";
 import { format } from "date-fns";
 
+
 type VideoItem = {
   id: string | number;
   title: string;
   mentorName: string;
   thumbnail: string;
+  courseName: string;
   introVideo: string;
   videoUrl: string;
   mentorProfileImage: string;
@@ -54,7 +56,7 @@ const VideoModal = ({ data }: Props) => {
   };
 
   const currentSrc = videoQueue[currentIndex];
-  console.log(data);
+
   return (
     <div>
       <Dialog open={open} onOpenChange={handleModalChange}>
@@ -67,11 +69,12 @@ const VideoModal = ({ data }: Props) => {
               height={250}
               className="w-full h-56 rounded-lg"
             />
-            <div className="space-y-1 text-start px-2">
-              <p className="line-clamp-1">{data.title}</p>
+            <div className="text-start px-2">
+              <p className="line-clamp-1 mb-2">{data?.courseName}</p>
+              <p className="line-clamp-1 text-sm">{data.title}</p>
               <div className="flex justify-between">
-                <p>Mentors - {data?.mentorName}</p>
-                <p className="bg-black/20 px-2 rounded-sm">
+                <p className="text-sm">Mentors - {data?.mentorName}</p>
+                <p className="bg-black/20 px-2 rounded-sm text-sm">
                   {format(new Date(data.createdAt), "MMM d, yyyy")}
                 </p>
               </div>

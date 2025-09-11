@@ -42,7 +42,7 @@ const Content = () => {
     skip: course?.data?.skip,
     total: course?.data?.total,
   };
-  console.log(metaData);
+
   return (
     <div className="space-y-8">
       <div className="flex justify-between gap-5">

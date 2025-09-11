@@ -11,13 +11,17 @@ import {
 } from "@/redux/features/content/content.api";
 import AddVideo from "./Modal/AddVideo";
 import VideoModal from "../common/VideoModal";
+import { useState } from "react";
+import Pagination from "@/components/common/Pagination";
 
 const SingleCourse = () => {
+  const [currentPage, setCurrentPage] = useState(1);
   const { id } = useParams();
   const { data, isFetching } = useCourseQuery(id);
   const { data: videos } = useAllVideoQuery([
     { name: "limit", value: 9 },
     { name: "courseId", value: id },
+    { name: "page", value: String(currentPage) },
   ]);
 
   if (isFetching) {
@@ -31,6 +35,13 @@ const SingleCourse = () => {
     return <Spinner />;
   }
 
+  const metaData = {
+    limit: videos?.data?.limit,
+    page: videos?.data?.page,
+    skip: videos?.data?.skip,
+    total: videos?.data?.total,
+  };
+  console.log("==>", allVideo);
   return (
     <div className="my-6 border border-white/50 rounded-lg bg-secondary p-5">
       <div className="flex gap-3 justify-between items-center">
@@ -78,6 +89,15 @@ const SingleCourse = () => {
           <VideoModal key={item.id} data={item} />
         ))}
       </div>
+
+      {metaData?.total > 9 && (
+        <Pagination
+          currentPage={metaData?.page}
+          totalItem={metaData?.total}
+          limit={9}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+      )}
     </div>
   );
 };
